@@ -71,7 +71,16 @@ export const BACKEND: 'bridge' | 'direct' = choice(
  * `wss://` maps to `https://` on its own, which is why this is a prefix swap
  * rather than a hardcoded scheme.
  */
-export const BRIDGE_WS_URL = str(import.meta.env.VITE_BRIDGE_URL) ?? 'ws://localhost:8787'
+/**
+ * No override and the page was NOT opened on this machine (for example from an
+ * iPhone, through Tailscale Serve): `localhost` would mean the phone itself, so
+ * go through the Vite server's `/bridge` proxy instead, on the same origin.
+ */
+const onThisMachine =
+  typeof location === 'undefined' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
+const remoteBridge = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/bridge`
+export const BRIDGE_WS_URL =
+  str(import.meta.env.VITE_BRIDGE_URL) ?? (onThisMachine ? 'ws://localhost:8787' : remoteBridge)
 export const BRIDGE_HTTP_URL = BRIDGE_WS_URL.replace(/^ws/, 'http')
 
 /**

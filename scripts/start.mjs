@@ -111,6 +111,15 @@ if (port) {
   console.log(`  serving the face on port ${port}; the bridge will accept it.\n`)
 }
 
+// Phone access (see GUIA_IPHONE.md): trust the HTTPS tailnet name that
+// Tailscale Serve publishes, and only that name.
+const phoneHost = process.env.JARVIS_PHONE_HOST?.trim()
+if (phoneHost && /^[a-z0-9.-]+\.ts\.net$/i.test(phoneHost)) {
+  const extra = `https://${phoneHost}`
+  bridgeEnv.JARVIS_ALLOWED_ORIGINS = [bridgeEnv.JARVIS_ALLOWED_ORIGINS, extra].filter(Boolean).join(',')
+  console.log(`  phone access enabled for ${extra}\n`)
+}
+
 vendorWasm()
 
 console.log('\nJ.A.R.V.I.S. starting — the brain and the face.\n')

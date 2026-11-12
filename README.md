@@ -388,4 +388,4 @@ that audio is your responsibility.
   `~/.jarvis/workspace/jarvis-memory.json` (apague o arquivo para ele esquecer tudo).
 - **Modelo padrão** `claude-sonnet-5-5`, esforço `medium` (menos consumo do plano Pro).
   Mude com `JARVIS_MODEL` / `JARVIS_EFFORT`.
-- Acesso pelo iPhone: **ainda não implementado**.
+- **iPhone** via Tailscale: veja `GUIA_IPHONE.md`. **Instalação no Windows**: `GUIA_WINDOWS.md`.
